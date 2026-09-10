@@ -1,0 +1,40 @@
+services:
+  postgres:
+    image: postgres:16-bookworm
+    environment:
+      POSTGRES_DB: pgos
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_USER: postgres
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres -d pgos"]
+      interval: 1s
+      timeout: 5s
+      retries: 30
+    tmpfs:
+      # The integration environment is disposable. Do not use this for data.
+      - /var/lib/postgresql/data
+
+  test:
+    build:
+      context: ..
+      target: builder
+    environment:
+      PGOS_TEST_DATABASE_URL: postgresql://postgres:postgres@postgres:5432/pgos
+    depends_on:
+      postgres:
+        condition: service_healthy
+    command: cargo test --workspace
+
+  mount-smoke:
+    build:
+      context: ..
+      target: runtime
+    privileged: true
+    environment:
+      PGOS_DATABASE_URL: postgresql://postgres:postgres@postgres:5432/pgos
+      PGOS_VOLUME: docker-smoke
+    depends_on:
+      postgres:
+        condition: service_healthy
+    entrypoint: ["docker-mount-smoke"]
+    command: []

@@ -1,0 +1,7 @@
+/target
+# Benchmarks will be published after their methodology is stable.
+/benchmarks/
+.env
+*.log
+__pycache__/
+*.py[cod]

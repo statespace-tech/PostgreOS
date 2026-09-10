@@ -1,0 +1,74 @@
+[package]
+name = "postgreos"
+version = "0.1.0"
+edition = "2024"
+rust-version = "1.88"
+description = "A PostgreSQL-backed filesystem environment for Linux"
+license = "GPL-3.0-only"
+readme = "README.md"
+homepage = "https://github.com/statespace-tech/PostgreOS"
+repository = "https://github.com/statespace-tech/PostgreOS"
+keywords = ["postgresql", "filesystem", "fuse", "linux"]
+categories = ["command-line-utilities", "database", "filesystem"]
+default-run = "pgos"
+include = [
+    "/src/**",
+    "/tests/**",
+    "/Cargo.toml",
+    "/Cargo.lock",
+    "/README.md",
+    "/LICENSE",
+    "/CHANGELOG.md",
+]
+
+[[bin]]
+name = "pgos"
+path = "src/bin/pgos/main.rs"
+
+[[bin]]
+name = "pgosd"
+path = "src/bin/pgosd.rs"
+
+[[bin]]
+name = "pgos-mount"
+path = "src/bin/pgos-mount.rs"
+
+[dependencies]
+anyhow = "1.0"
+bincode = { version = "=2.0.1", features = ["derive"] }
+clap = { version = "4.6", features = ["derive", "env"] }
+csv = "1.4"
+diesel = { version = "2.3", features = ["postgres", "r2d2", "uuid"] }
+globset = "0.4"
+grep-regex = "0.1"
+grep-searcher = "0.1"
+hex = "0.4"
+memchr = "2.8"
+regex = "1.11"
+regex-syntax = "0.8"
+thiserror = "2.0"
+uuid = { version = "1.26", features = ["v4"] }
+walkdir = "2.5"
+
+[target.'cfg(target_os = "linux")'.dependencies]
+fuser = { version = "0.18", default-features = false }
+libc = "0.2"
+
+[dev-dependencies]
+assert_cmd = "2.2"
+predicates = "3.1"
+tempfile = "3.20"
+
+[lints.rust]
+unsafe_code = "forbid"
+
+[lints.clippy]
+all = { level = "warn", priority = -1 }
+pedantic = { level = "warn", priority = -1 }
+missing_errors_doc = "allow"
+module_name_repetitions = "allow"
+
+[profile.release]
+lto = "thin"
+codegen-units = 1
+strip = "symbols"
