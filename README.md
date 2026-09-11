@@ -1,4 +1,11 @@
-# PostgreOS
+<div align="center">
+  <h1>PostgreOS</h1>
+  <p>
+    <a href="https://github.com/statespace-tech/PostgreOS/actions/workflows/ci.yml"><img alt="Test Suite" src="https://github.com/statespace-tech/PostgreOS/actions/workflows/ci.yml/badge.svg"></a>
+    <a href="LICENSE"><img alt="License" src="https://img.shields.io/badge/license-GPL--3.0-blue.svg"></a>
+    <a href="https://crates.io/crates/postgreos"><img alt="crates.io" src="https://img.shields.io/crates/v/postgreos.svg"></a>
+  </p>
+</div>
 
 PostgreOS is a Debian environment with a PostgreSQL-backed filesystem. It mounts a
 local or remote PostgreSQL volume at `/workspace`. PostgreOS is an early release. Use
